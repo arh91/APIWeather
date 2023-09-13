@@ -40,7 +40,7 @@ def conexion():
                 imprimirDatos(datos, estadoTiempo)
 
         else:
-            print("De esa ciudad no tengo datos.")
+            print("Lo sentimos, los datos para esa ciudad no se encuentran disponibles.")
 
         tecla=input("Pulse S si quiere salir del programa o cualquier otra tecla si desea continuar:\n")
 
