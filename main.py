@@ -1,19 +1,26 @@
 import requests as requests
 
+from socket import gethostbyname, create_connection, error
+
+onlineConnection = "false"
+
 def conexion():
 
     tecla = "w"
 
+
     while tecla!="s" and tecla!="S":
-        # Pedimos el nombre de la ciudad por teclado
         ciudad = input("Introduzca el nombre de una ciudad:")
-        print("\n")
+        comprobarConexionInternet()
+        if(onlineConnection == "false"):
+            continue
 
         # Creamos un diccionario con los parámetros de la URL
         parametros = {"q": ciudad,
                       "units": "metric",
                       "APPID": "89b9fdb6f95944991fd97b6727d65c78"}
 
+        print("\n")
         # Realizamos la petición, indicando la URL y los parámetros
         respuesta = requests.get("http://api.openweathermap.org/data/2.5/weather", params=parametros)
 
@@ -52,6 +59,19 @@ def imprimirDatos(datos, descripcion):
     print("La temperatura máxima es:", datos["main"]["temp_max"], "ºC")
     print("La presión es:", datos["main"]["pressure"], "hPa")
     print("La humedad es:", datos["main"]["humidity"], "% \n")
+
+
+#Si no se pueden obtener los datos por falta de conexión a Internet, se informará al usuario de ello
+def comprobarConexionInternet():
+    global onlineConnection
+    try:
+        gethostbyname("google.com")
+        conexion = create_connection(("google.com", 80), 1)
+        conexion.close()
+        onlineConnection = "true"
+    except error:
+        print("No se pueden comprobar los datos sin conexión a Internet")
+        print("\n")
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
